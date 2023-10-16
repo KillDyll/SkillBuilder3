@@ -21,6 +21,7 @@ public class Grok
     public Grok()
     {
         setPowerLevel(DEFAULT_POWER_LEVEL);
+
     }
 
     /*
@@ -31,6 +32,8 @@ public class Grok
     public Grok(int powerLevel)
     {
         setPowerLevel(powerLevel);
+        isAlive = powerLevel > 0;
+
     }
 
     // accessor methods
@@ -46,7 +49,11 @@ public class Grok
 
     public boolean isDead()
     {
-        // TODO: replace this line with your code here
+        if (powerLevel <= 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // mutator methods
@@ -57,7 +64,15 @@ public class Grok
      */
     public void setPowerLevel(int powerLevel)
     {
-        this.powerLevel = powerLevel;
+        if (powerLevel <= 0) {
+            this.powerLevel = 0;
+            isAlive = false;
+        } else if (powerLevel > MAX_POWER_LEVEL) {
+            this.powerLevel = MAX_POWER_LEVEL;
+        } else {
+            this.powerLevel = powerLevel;
+            isAlive = true;
+        }
     }
 
     /*
@@ -68,7 +83,10 @@ public class Grok
      */
     public void takePowerPill(PowerPill pill)
     {
-        setPowerLevel(powerLevel + pill.getPower());
+        if (isAlive) {
+            int newPowerLevel = powerLevel + pill.getPower();
+            setPowerLevel(newPowerLevel);
+        }
     }
 
     /*
@@ -77,7 +95,14 @@ public class Grok
      */
     public void tookHit()
     {
-        setPowerLevel(powerLevel - 5);
+        if (isAlive) {
+            int newPowerLevel = powerLevel - 5;
+            if (newPowerLevel <= 0) {
+                setPowerLevel(0);
+            } else {
+                setPowerLevel(newPowerLevel);
+            }
+        }
     }
 
     //================== Do Not Touch Code Below this line =============================
